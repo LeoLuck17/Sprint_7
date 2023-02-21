@@ -1,32 +1,28 @@
+import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
-import org.example.Order;
-import org.example.OrderClient;
-import org.example.OrderGenerator;
+import org.example.api.client.OrderClient;
+import org.example.api.model.Order;
+import org.example.api.util.OrderGenerator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import java.util.*;
-
+import static org.apache.http.HttpStatus.SC_CREATED;
 import static org.junit.Assert.assertEquals;
-import static org.apache.http.HttpStatus.*;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(Parameterized.class)
 public class OrderTest {
-    @Before
-    public void setUp(){
-        orderClient = new OrderClient();
-    }
-    OrderClient orderClient;
     private final String[] color;
+    OrderClient orderClient;
 
     public OrderTest(String[] color) {
         this.color = color;
     }
 
-    @Parameterized.Parameters
-    public static String[][][] setData(){
+    @Parameterized.Parameters(name = "Авторизация пользователя. Тестовые данные: {0}")
+    public static String[][][] setData() {
         return new String[][][]{
                 {{"BLACK"}},
                 {{"GREY"}},
@@ -34,15 +30,18 @@ public class OrderTest {
                 {{null}}
         };
     }
+
+    @Before
+    public void setUp() {
+        orderClient = new OrderClient();
+    }
+
     @Test
-    public void orderCanBeCreated(){
-        System.out.println(Arrays.toString(color));
+    public void orderCanBeCreated() {
         Order order = OrderGenerator.getValidOrder(color);
-        System.out.println(order);
         ValidatableResponse response = orderClient.createOrder(order);
         int statusCode = response.extract().statusCode();
-        int trackOrder = response.extract().path("track");
         assertEquals(SC_CREATED, statusCode);
-        System.out.println(trackOrder);
+        assertNotNull(response.extract().path("track"));
     }
 }

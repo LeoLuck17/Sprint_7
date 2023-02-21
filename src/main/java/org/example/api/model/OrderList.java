@@ -1,4 +1,4 @@
-package org.example;
+package org.example.api.model;
 
 public class OrderList {
     private int courierId;
@@ -6,7 +6,8 @@ public class OrderList {
     private int limit;
     private int page;
 
-    public OrderList() {}
+    public OrderList() {
+    }
 
     public OrderList(int courierId, String[] nearestStation, int limit, int page) {
         this.courierId = courierId;

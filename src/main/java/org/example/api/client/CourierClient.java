@@ -1,6 +1,10 @@
-package org.example;
+package org.example.api.client;
 
+import io.qameta.allure.Step;
 import io.restassured.response.ValidatableResponse;
+import org.example.api.model.Courier;
+import org.example.api.model.CourierCredentials;
+
 import static io.restassured.RestAssured.given;
 
 public class CourierClient extends Client {
@@ -9,7 +13,8 @@ public class CourierClient extends Client {
     private static final String PATH_LOGIN = "/api/v1/courier/login";
     private static final String PATH_DELETE = "/api/v1/courier:id";
 
-    public ValidatableResponse createCourier(Courier courier){
+    @Step("Создание курьера")
+    public ValidatableResponse createCourier(Courier courier) {
         return given()
                 .spec(getSpec())
                 .body(courier)
@@ -17,7 +22,9 @@ public class CourierClient extends Client {
                 .post(PATH_CREATED)
                 .then();
     }
-    public ValidatableResponse login(CourierCredentials courierCredentials){
+
+    @Step("Авторизация курьера")
+    public ValidatableResponse login(CourierCredentials courierCredentials) {
 
         return given()
                 .spec(getSpec())
@@ -26,7 +33,9 @@ public class CourierClient extends Client {
                 .post(PATH_LOGIN)
                 .then();
     }
-    public ValidatableResponse delete(int id){
+
+    @Step("Удаление курьера")
+    public ValidatableResponse delete(int id) {
         return given()
                 .spec(getSpec())
                 .body(id)

@@ -1,4 +1,6 @@
-package org.example;
+package org.example.api.util;
+
+import org.example.api.model.Courier;
 
 public class CourierGenerator extends GenerateRandomData {
     public static Courier getValidCourier(){

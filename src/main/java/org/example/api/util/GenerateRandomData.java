@@ -1,4 +1,4 @@
-package org.example;
+package org.example.api.util;
 
 import java.util.ArrayList;
 import java.util.Random;
